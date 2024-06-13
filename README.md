@@ -1,1 +1,1 @@
-# Repositŕio de projetos em Quarkus
+# Repositório de projetos em Quarkus
