@@ -8,7 +8,7 @@ Para rodar a aplicação é necessário ter o **Java 21** devidamente instalado,
 Após a subida da aplicação basta acesse o navegador no endereço http://localhost:9999/api/addresses?zipcode=9999999 
 onde **zipcode=9999999** deve ser informado o CEP do endereço a ser procurado.
 
-Os dados retornados pelo microservice são os seguintes:
+Os dados retornados pelo microservice são os seguintes:\
 CEP\
 DDD\
 Rua\
