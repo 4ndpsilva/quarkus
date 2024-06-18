@@ -3,7 +3,7 @@ package br.com.quarkus.finder.service;
 import br.com.quarkus.finder.dto.AddressResponseDTO;
 import br.com.quarkus.finder.dto.ViaCepResponseDTO;
 import br.com.quarkus.finder.exception.BusinessException;
-import br.com.quarkus.finder.exception.ServerException;
+import br.com.quarkus.finder.exception.CEPNotFoundException;
 import br.com.quarkus.finder.mapper.AddressMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,18 +24,11 @@ public class AddressService {
 
     public AddressResponseDTO find(String zipCode){
         try{
-            if(zipCode == null || zipCode.isBlank()){
-                throw new BusinessException("É obrigatório informar o CEP");
-            }
-
-            if(!zipCode.matches("^[0-9]{8,}$")){
-                throw new BusinessException("CEP Inválido");
-            }
-
+            validateZipCode(zipCode);
             ViaCepResponseDTO responseDTO = viaCepService.getAddress(zipCode);
 
             if(responseDTO.cep() == null || responseDTO.cep().isBlank()){
-                throw new BusinessException("Endereço não encontrado para o CEP informado");
+                throw new CEPNotFoundException("Endereço não encontrado para o CEP informado");
             }
 
             return mapper.toResponseDTO(responseDTO);
@@ -46,11 +39,17 @@ public class AddressService {
             }
 
             log.error("OTHER ERROR: {}", ex.getMessage());
-            throw new BusinessException("ERRO NA CHAMADA DA API");
+            throw new RuntimeException("ERRO NA CHAMADA DA API");
         }
-        catch (Exception ex) {
-            log.error("SERVER ERROR: {}", ex.getMessage());
-            throw new ServerException(ex);
+    }
+
+    public void validateZipCode(String zipCode){
+        if(zipCode == null || zipCode.isBlank()){
+            throw new BusinessException("É obrigatório informar o CEP");
+        }
+
+        if(!zipCode.matches("^[0-9]{8,}$")){
+            throw new BusinessException("CEP Inválido");
         }
     }
 }
