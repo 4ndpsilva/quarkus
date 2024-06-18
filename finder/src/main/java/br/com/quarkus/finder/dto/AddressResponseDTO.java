@@ -2,8 +2,7 @@ package br.com.quarkus.finder.dto;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
-@JsonbPropertyOrder({"zipCode", "street", "district", "complement",
-    "district", "city", "state", "ddd"})
+@JsonbPropertyOrder({"zipCode", "ddd", "street", "complement", "district", "city", "state"})
 public record AddressResponseDTO(
     String zipCode,
     String street,
